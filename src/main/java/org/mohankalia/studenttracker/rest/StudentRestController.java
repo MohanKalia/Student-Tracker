@@ -34,17 +34,24 @@ public class StudentRestController {
 
     @PostMapping("/students")
     public Student addStudent(@RequestBody Student student) {
+        student.setId(0);
         Student temp = studentService.save(student);
         return temp;
     }
 
-    @PutMapping("/students/{id}")
-    public Student updateStudent(@PathVariable int id, @RequestBody Student student) {
+    @PutMapping("/students")
+    public Student updateStudent(@RequestBody Student student) {
+        Student temp = studentService.save(student);
+        return temp;
+    }
+
+    @DeleteMapping("/students/{id}")
+    public String deleteStudent(@PathVariable int id) {
         Student temp = studentService.findById(id);
         if (temp == null) {
             throw new RuntimeException("The Student with id " + id + " does not exist");
         }
-        return studentService.save(student);
+        studentService.deleteById(id);
+        return "Deleted Student with id " + id;
     }
-
 }
