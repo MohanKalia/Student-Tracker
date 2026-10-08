@@ -17,11 +17,13 @@ public class StudentRestController {
         this.studentService = studentService;
     }
 
+    // gets all the students in the database
     @GetMapping("/students")
     public List<Student> findAll() {
         return studentService.findAll();
     }
 
+    // returns the single student if It exists in the database
     @GetMapping("/students/{id}")
     public Student findById(@PathVariable int id) {
         Student temp = studentService.findById(id);
@@ -29,6 +31,17 @@ public class StudentRestController {
             throw new RuntimeException("The Student with id " + id + " does not exist");
         }
         return temp;
+    }
+
+    // Delete a student
+    @DeleteMapping("/students/{id}")
+    public String deleteStudent(@PathVariable int id) {
+        Student temp = studentService.findById(id);
+        if (temp == null) {
+            throw new RuntimeException("The Student with id " + id + " does not exist");
+        }
+        studentService.deleteById(id);
+        return "Deleted Student with id " + id;
     }
 
 
@@ -45,13 +58,5 @@ public class StudentRestController {
         return temp;
     }
 
-    @DeleteMapping("/students/{id}")
-    public String deleteStudent(@PathVariable int id) {
-        Student temp = studentService.findById(id);
-        if (temp == null) {
-            throw new RuntimeException("The Student with id " + id + " does not exist");
-        }
-        studentService.deleteById(id);
-        return "Deleted Student with id " + id;
-    }
+
 }
