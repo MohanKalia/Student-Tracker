@@ -185,6 +185,7 @@ Example format:
 | `POST`   | `/students`      | Create a student |
 | `PUT`    | `/students/{id}` | Update a student |
 | `DELETE` | `/students/{id}` | Delete a student |
+| `PATCH`  | `/students/{id}` | Patch a student  |
 
 ## Testing
 
@@ -216,7 +217,7 @@ This project is also being used to practice backend engineering concepts such as
 
 Planned improvements include:
 
-* [ ] Complete student CRUD operations
+* [X] Complete student CRUD operations
 * [ ] Add request/response DTOs
 * [ ] Add validation
 * [ ] Add global exception handling
