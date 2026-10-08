@@ -1,1 +1,11 @@
+# Target directory
 /target
+*.class
+*.jar
+*.war
+
+.idea/
+*.iml
+out/
+
+.log
