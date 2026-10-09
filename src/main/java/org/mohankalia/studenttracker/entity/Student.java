@@ -20,6 +20,28 @@ public class Student {
     @Column(name="email")
     private String email;
 
+    @Column(name = "study_level")
+    private String studyLevel;
+
+    @Column(name = "university")
+    private String university;
+
+    public String getStudyLevel() {
+        return studyLevel;
+    }
+
+    public void setStudyLevel(String studyLevel) {
+        this.studyLevel = studyLevel;
+    }
+
+    public String getUniversity() {
+        return university;
+    }
+
+    public void setUniversity(String university) {
+        this.university = university;
+    }
+
     public Student(String email, String lastName, String firstName) {
         this.email = email;
         this.lastName = lastName;
