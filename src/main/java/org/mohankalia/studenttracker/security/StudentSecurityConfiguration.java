@@ -12,9 +12,9 @@ public class StudentSecurityConfiguration {
     @Bean
     public InMemoryUserDetailsManager inMemoryUserDetailsManager() {
 
-        UserDetails john = User.builder().username("john").password("test123").roles("STUDENT").build();
-        UserDetails mary = User.builder().username("mary").password("test123").roles("PROFESSOR").build();
-        UserDetails ankesh = User.builder().username("ankesh").password("test123").roles("DEAN").build();
+        UserDetails john = User.builder().username("john").password("{noop}test123").roles("STUDENT").build();
+        UserDetails mary = User.builder().username("mary").password("{noop}test123").roles("PROFESSOR").build();
+        UserDetails ankesh = User.builder().username("ankesh").password("{noop}test123").roles("DEAN").build();
 
         return new InMemoryUserDetailsManager(john);
     }
