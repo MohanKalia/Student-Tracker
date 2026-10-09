@@ -81,12 +81,12 @@ public class StudentRestController {
     }
 
     // New mappings for university and studylevel
-    @GetMapping("/students/{university}")
+    @GetMapping("/students/university/{university}")
     public List<Student> findByUniversity(@PathVariable String university) {
         return studentService.findByUniversity(university);
     }
 
-    @GetMapping("/students/{studyLevel")
+    @GetMapping("/students/studylevel/{studyLevel")
     public List<Student> findByStudyLevel(@PathVariable String studyLevel) {
         return studentService.findByStudyLevel(studyLevel);
     }
