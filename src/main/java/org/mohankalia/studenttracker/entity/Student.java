@@ -26,6 +26,15 @@ public class Student {
     @Column(name = "university")
     private String university;
 
+    public Student(int id, String firstName, String lastName, String email, String studyLevel, String university) {
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.studyLevel = studyLevel;
+        this.university = university;
+    }
+
     public String getStudyLevel() {
         return studyLevel;
     }
@@ -40,12 +49,6 @@ public class Student {
 
     public void setUniversity(String university) {
         this.university = university;
-    }
-
-    public Student(String email, String lastName, String firstName) {
-        this.email = email;
-        this.lastName = lastName;
-        this.firstName = firstName;
     }
 
     public Student() {
