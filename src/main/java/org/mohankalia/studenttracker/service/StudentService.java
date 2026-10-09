@@ -23,10 +23,10 @@ public class StudentService {
 
     public Student findById(int id) {
         Optional<Student> temp = studentRepository.findById(id);
-        if (temp.get() == null) {
-            throw new RuntimeException("The student does not exist with the id :" + id);
+        if (temp.isPresent()) {
+            return temp.get();
         }
-        return temp.get();
+        throw new RuntimeException("Student with id " + id + " not found");
     }
 
     public Student save(Student student) {
