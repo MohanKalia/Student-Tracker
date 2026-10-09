@@ -1,5 +1,7 @@
 package org.mohankalia.studenttracker.service;
 
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.TypedQuery;
 import org.mohankalia.studenttracker.dao.StudentRepository;
 import org.mohankalia.studenttracker.entity.Student;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,5 +37,13 @@ public class StudentService {
 
     public void deleteById(int id) {
         studentRepository.deleteById(id);
+    }
+
+    public List<Student> findByUniversity(String university) {
+        return studentRepository.findByUniversity(university);
+    }
+
+    public List<Student> findByStudyLevel(String studyLevel) {
+        return studentRepository.findByStudyLevel(studyLevel);
     }
 }
