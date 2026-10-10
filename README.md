@@ -12,6 +12,7 @@ Student Tracker is a backend-focused project for learning and applying modern Sp
 * **Spring Boot 4.1.1**
 * **Spring WebMVC**
 * **Spring Data JPA**
+* **Spring Security**
 * **MySQL**
 * **Springdoc OpenAPI**
 * **Maven**
