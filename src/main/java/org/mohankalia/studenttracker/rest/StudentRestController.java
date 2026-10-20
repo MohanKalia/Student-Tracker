@@ -1,6 +1,5 @@
 package org.mohankalia.studenttracker.rest;
 
-import org.mohankalia.studenttracker.dao.StudentRepository;
 import org.mohankalia.studenttracker.entity.Student;
 import org.mohankalia.studenttracker.service.StudentService;
 import org.springframework.web.bind.annotation.*;
@@ -13,8 +12,8 @@ import java.util.Map;
 @RequestMapping("/api")
 public class StudentRestController {
 
-    private StudentService studentService;
-    private JsonMapper jsonMapper;
+    private final StudentService studentService;
+    private final JsonMapper jsonMapper;
 
     public StudentRestController(StudentService studentService, JsonMapper jsonMapper) {
         this.studentService = studentService;
@@ -52,8 +51,7 @@ public class StudentRestController {
     @PostMapping("/students")
     public Student addStudent(@RequestBody Student student) {
         student.setId(0); // this will make sure that the student gets added and not merged
-        Student temp = studentService.save(student);
-        return temp;
+        return studentService.save(student);
     }
 
     @PutMapping("/students")
@@ -76,8 +74,7 @@ public class StudentRestController {
             throw new RuntimeException("For PATCH the id cannot be included into the body.");
         }
         temp = jsonMapper.updateValue(temp, payLoadData);
-        Student dbStudent = studentService.save(temp);
-        return dbStudent;
+        return studentService.save(temp);
     }
 
     // New mappings for university and studylevel
@@ -86,7 +83,7 @@ public class StudentRestController {
         return studentService.findByUniversity(university);
     }
 
-    @GetMapping("/students/studylevel/{studyLevel")
+    @GetMapping("/students/studylevel/{studyLevel}")
     public List<Student> findByStudyLevel(@PathVariable String studyLevel) {
         return studentService.findByStudyLevel(studyLevel);
     }
