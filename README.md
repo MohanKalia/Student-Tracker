@@ -61,7 +61,7 @@ The application defines in-memory accounts for development:
 | --- | --- | --- |
 | `john` | `test123` | Student |
 | `mary` | `test123` | Student, Professor |
-| `ankesh` | `test123` | Student, Professor, Dean |
+| `susan` | `test123` | Student, Professor, Dean |
 
 These accounts are for local development only. Replace them before deploying the application.
 
