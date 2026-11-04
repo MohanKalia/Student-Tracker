@@ -30,20 +30,17 @@ public class StudentRestController {
         this.validator = validator;
     }
 
-    // gets all the students in the database
     @GetMapping("/students")
     public List<StudentResponse> findAll() {
         return studentService.findAll().stream().map(StudentResponse::from).toList();
     }
 
-    // returns the single student if It exists in the database
     @GetMapping("/students/{id}")
     public StudentResponse findById(@PathVariable int id) {
-        Student temp = studentService.findById(id);
-        return StudentResponse.from(temp);
+        Student student = studentService.findById(id);
+        return StudentResponse.from(student);
     }
 
-    // Delete a student
     @DeleteMapping("/students/{id}")
     public String deleteStudent(@PathVariable int id) {
         studentService.findById(id);
@@ -55,7 +52,7 @@ public class StudentRestController {
     @PostMapping("/students")
     public StudentResponse addStudent(@Valid @RequestBody StudentRequest request) {
         Student student = toStudent(request);
-        student.setId(0); // this will make sure that the student gets added and not merged
+        student.setId(0);
         return StudentResponse.from(studentService.save(student));
     }
 
@@ -68,21 +65,20 @@ public class StudentRestController {
 
     @PatchMapping("/students/{id}")
     public StudentResponse patchStudent(@PathVariable int id, @RequestBody StudentPatchRequest request) {
-        Student temp = studentService.findById(id);
-        var payLoadData = request.getFields();
-        if (payLoadData.containsKey("id")) {
+        Student student = studentService.findById(id);
+        var fields = request.getFields();
+        if (fields.containsKey("id")) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "For PATCH the id cannot be included into the body.");
         }
-        StudentRequest updatedStudent = toRequest(temp);
-        jsonMapper.updateValue(updatedStudent, payLoadData);
-        Set<ConstraintViolation<StudentRequest>> violations = validator.validate(updatedStudent);
+        StudentRequest updatedRequest = toRequest(student);
+        jsonMapper.updateValue(updatedRequest, fields);
+        Set<ConstraintViolation<StudentRequest>> violations = validator.validate(updatedRequest);
         if (!violations.isEmpty()) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Student details are invalid.");
         }
-        return StudentResponse.from(studentService.save(toStudent(updatedStudent)));
+        return StudentResponse.from(studentService.save(toStudent(updatedRequest)));
     }
 
-    // New mappings for university and studylevel
     @GetMapping("/students/university/{university}")
     public List<StudentResponse> findByUniversity(@PathVariable String university) {
         return studentService.findByUniversity(university).stream().map(StudentResponse::from).toList();

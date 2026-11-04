@@ -2,7 +2,6 @@ package org.mohankalia.studenttracker.service;
 
 import org.mohankalia.studenttracker.dao.StudentRepository;
 import org.mohankalia.studenttracker.entity.Student;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -12,10 +11,9 @@ import java.util.Optional;
 
 @Service
 public class StudentService {
-    private StudentRepository studentRepository;
+    private final StudentRepository studentRepository;
 
-    @Autowired
-    public void setStudentRepository(StudentRepository studentRepository) {
+    public StudentService(StudentRepository studentRepository) {
         this.studentRepository = studentRepository;
     }
 

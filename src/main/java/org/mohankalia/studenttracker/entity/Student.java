@@ -3,7 +3,7 @@ package org.mohankalia.studenttracker.entity;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name="student")
+@Table(name = "student")
 public class Student {
 
     @Id

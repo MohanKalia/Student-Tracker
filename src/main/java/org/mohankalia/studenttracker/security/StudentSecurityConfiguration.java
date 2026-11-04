@@ -23,9 +23,21 @@ public class StudentSecurityConfiguration {
     @Bean
     public InMemoryUserDetailsManager inMemoryUserDetailsManager(PasswordEncoder passwordEncoder) {
 
-        UserDetails john = User.builder().username("john").password(passwordEncoder.encode("test123")).roles("STUDENT").build();
-        UserDetails mary = User.builder().username("mary").password(passwordEncoder.encode("test123")).roles("STUDENT", "PROFESSOR").build();
-        UserDetails susan = User.builder().username("susan").password(passwordEncoder.encode("test123")).roles("STUDENT", "PROFESSOR", "DEAN").build();
+        UserDetails john = User.builder()
+                .username("john")
+                .password(passwordEncoder.encode("test123"))
+                .roles("STUDENT")
+                .build();
+        UserDetails mary = User.builder()
+                .username("mary")
+                .password(passwordEncoder.encode("test123"))
+                .roles("STUDENT", "PROFESSOR")
+                .build();
+        UserDetails susan = User.builder()
+                .username("susan")
+                .password(passwordEncoder.encode("test123"))
+                .roles("STUDENT", "PROFESSOR", "DEAN")
+                .build();
         return new InMemoryUserDetailsManager(john, mary, susan);
     }
 
@@ -40,16 +52,12 @@ public class StudentSecurityConfiguration {
                         .requestMatchers(HttpMethod.POST, "/api/students").hasRole("PROFESSOR")
                         .requestMatchers(HttpMethod.DELETE, "/api/students/**").hasRole("DEAN")
                         .requestMatchers(HttpMethod.PATCH, "/api/students/**").hasRole("PROFESSOR")
-                        // adding new request matchers for the university and study level
                         .requestMatchers(HttpMethod.GET, "/api/students/university/**").hasRole("STUDENT")
                         .requestMatchers(HttpMethod.GET, "/api/students/studylevel/**").hasRole("STUDENT")
                         .anyRequest().authenticated()
         );
 
-        // adding basic http authentication
         http.httpBasic(Customizer.withDefaults());
-
-        // diabling csrf not need for this stateless api with basic crud operations
 
         http.csrf(csrf -> csrf.disable());
 
