@@ -1,247 +1,80 @@
-# Student-Tracker
+# Student Tracker
 
-A RESTful backend for managing student data, built with **Java** and **Spring Boot**.
-
-Student Tracker is a backend-focused project for learning and applying modern Spring development practices, including REST API design, persistence with Spring Data JPA, database integration, and API documentation.
-
-> 🚧 **Project status:** In development
-
-## Tech Stack
-
-* **Java 25**
-* **Spring Boot 4.1.1**
-* **Spring WebMVC**
-* **Spring Data JPA**
-* **Spring Security**
-* **MySQL**
-* **Springdoc OpenAPI**
-* **Maven**
-
-## Overview
-
-The goal of Student Tracker is to build a clean and maintainable REST API for working with student records.
-
-The project is being developed with a layered backend architecture so that HTTP handling, business logic, and data access remain separated.
-
-```text
-Client
-   │
-   ▼
-Controller
-   │
-   ▼
-Service
-   │
-   ▼
-Repository
-   │
-   ▼
-MySQL
-```
+A secured REST API for managing student records, built with Java 25, Spring Boot, and MySQL. It supports student CRUD, filtering by university or study level, request validation, and interactive API docs.
 
 ## Features
 
-Current development focuses on:
+- Create, read, update, partially update, and delete student records
+- Filter records by university or study level
+- Persist data with Spring Data JPA and MySQL
+- Protect endpoints with HTTP Basic authentication and role based permissions
+- Explore the API through Swagger UI
 
-* Student data management
-* RESTful API endpoints
-* Persistent storage with MySQL
-* Database access through Spring Data JPA
-* Automatic API documentation with OpenAPI / Swagger UI
+## Tech stack
 
-As the project develops, additional functionality will be added here.
+Java 25 · Spring Boot 4 · Spring WebMVC · Spring Data JPA · Spring Security · MySQL · Springdoc OpenAPI · Maven
 
-## Project Structure
+## Run locally
 
-The project follows a conventional Spring Boot structure:
-
-```text
-Student-Tracker/
-├── src/
-│   ├── main/
-│   │   ├── java/
-│   │   │   └── org/
-│   │   │       └── mohankalia/
-│   │   │           └── ...
-│   │   └── resources/
-│   │       └── application.properties
-│   │
-│   └── test/
-│
-├── .gitignore
-├── mvnw
-├── mvnw.cmd
-├── pom.xml
-└── README.md
-```
-
-## Getting Started
-
-### Prerequisites
-
-Make sure you have the following installed:
-
-* Java 25
-* MySQL
-* Git
-
-You can verify Java with:
-
-```bash
-java -version
-```
-
-### 1. Clone the repository
-
-```bash
-git clone https://github.com/MohanKalia/Student-Tracker.git
-cd Student-Tracker
-```
-
-### 2. Configure MySQL
-
-Create a MySQL database for the application.
-
-For example:
+You’ll need Java 25 and a MySQL server. Create a database:
 
 ```sql
 CREATE DATABASE student_tracker;
 ```
 
-Then configure the database connection in:
+Create a `.env` file in the project root and set your connection details:
 
-```text
-src/main/resources/application.properties
+```dotenv
+DB_URL=jdbc:mysql://localhost:3306/student_tracker
+DB_USERNAME=your_username
+DB_PASSWORD=your_password
 ```
 
-Example configuration:
+Keep credentials private; don’t commit a `.env` containing real secrets.
 
-```properties
-spring.datasource.url=jdbc:mysql://localhost:3306/student_tracker
-spring.datasource.username=your_username
-spring.datasource.password=your_password
-
-spring.jpa.hibernate.ddl-auto=update
-spring.jpa.show-sql=true
-```
-
-> Do not commit real database passwords or other secrets to Git.
-
-### 3. Run the application
-
-Using the Maven wrapper:
-
-#### Linux / macOS
+Start the application with the Maven wrapper:
 
 ```bash
 ./mvnw spring-boot:run
 ```
 
-#### Windows
-
-```powershell
-.\mvnw.cmd spring-boot:run
-```
-
-Or build the project first:
-
-```bash
-./mvnw clean package
-```
-
-Then run the generated JAR:
-
-```bash
-java -jar target/Student-Tracker-0.0.1-SNAPSHOT.jar
-```
-
-## API Documentation
-
-The project uses **OpenAPI / Swagger UI** for API documentation.
-
-Once the application is running, Swagger UI should be available at:
-
-```text
-http://localhost:8080/swagger-ui/index.html
-```
-
-The generated OpenAPI specification is available at:
-
-```text
-http://localhost:8080/v3/api-docs
-```
-
-These endpoints make it possible to explore and test the REST API directly from the browser.
+On Windows, use `mvnw.cmd spring-boot:run`.
 
 ## API
 
-As the API develops, endpoints will be documented here.
+All routes are under `/api` and require HTTP Basic authentication.
 
-Example format:
+| Method | Endpoint | Access |
+| --- | --- | --- |
+| `GET` | `/api/students` | Student |
+| `GET` | `/api/students/{id}` | Student |
+| `GET` | `/api/students/university/{university}` | Student |
+| `GET` | `/api/students/studylevel/{studyLevel}` | Student |
+| `POST` | `/api/students` | Professor |
+| `PUT` | `/api/students` | Professor; include the student ID in the request body |
+| `PATCH` | `/api/students/{id}` | Professor |
+| `DELETE` | `/api/students/{id}` | Dean |
 
-| Method   | Endpoint         | Description      |
-| -------- | ---------------- | ---------------- |
-| `GET`    | `/students`      | Get all students |
-| `GET`    | `/students/{id}` | Get a student    |
-| `POST`   | `/students`      | Create a student |
-| `PUT`    | `/students/{id}` | Update a student |
-| `DELETE` | `/students/{id}` | Delete a student |
-| `PATCH`  | `/students/{id}` | Patch a student  |
+The application defines in-memory accounts for development:
 
-## Testing
+| Username | Password | Roles |
+| --- | --- | --- |
+| `john` | `test123` | Student |
+| `mary` | `test123` | Student, Professor |
+| `ankesh` | `test123` | Student, Professor, Dean |
 
-Run the test suite with:
+These accounts are for local development only. Replace them before deploying the application.
+
+## API documentation
+
+With the app running, open [Swagger UI](http://localhost:8080/ui.html). The OpenAPI specification is at [http://localhost:8080/api-docs](http://localhost:8080/api-docs).
+
+## Tests
 
 ```bash
 ./mvnw test
 ```
 
-The project uses Spring's testing infrastructure to verify application behaviour as the codebase grows.
+## Project status
 
-## Development Goals
-
-This project is also being used to practice backend engineering concepts such as:
-
-* REST API design
-* Dependency injection
-* Layered architecture
-* Spring Data JPA
-* Hibernate
-* Relational database design
-* Exception handling
-* Input validation
-* API documentation
-* Automated testing
-* Clean and maintainable Java code
-
-## Roadmap
-
-Planned improvements include:
-
-* [X] Complete student CRUD operations
-* [ ] Add request/response DTOs
-* [ ] Add validation
-* [ ] Add global exception handling
-* [ ] Improve API documentation
-* [ ] Add unit and integration tests
-* [ ] Add database migrations
-* [ ] Add authentication and authorization
-* [ ] Add Docker support
-* [ ] Add CI with GitHub Actions
-* [ ] Deploy the API
-
-## Contributing
-
-This is primarily a personal learning project, but suggestions, issues, and pull requests are welcome.
-
-If you find a bug or have an idea for improving the project, feel free to open an issue.
-
-## License
-
-This project is currently available for educational and portfolio purposes.
-
-A formal open-source license can be added later if required.
-
----
-
-Built with Java and Spring Boot.
+Core student CRUD, DTOs, validation, role based access, and API documentation are implemented. Planned work includes global error handling, database migrations, stronger authentication, containerization, and deployment.
