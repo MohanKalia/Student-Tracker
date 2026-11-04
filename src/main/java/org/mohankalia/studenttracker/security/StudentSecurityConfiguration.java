@@ -25,8 +25,8 @@ public class StudentSecurityConfiguration {
 
         UserDetails john = User.builder().username("john").password(passwordEncoder.encode("test123")).roles("STUDENT").build();
         UserDetails mary = User.builder().username("mary").password(passwordEncoder.encode("test123")).roles("STUDENT", "PROFESSOR").build();
-        UserDetails ankesh = User.builder().username("ankesh").password(passwordEncoder.encode("test123")).roles("STUDENT", "PROFESSOR", "DEAN").build();
-        return new InMemoryUserDetailsManager(john, mary, ankesh);
+        UserDetails susan = User.builder().username("susan").password(passwordEncoder.encode("test123")).roles("STUDENT", "PROFESSOR", "DEAN").build();
+        return new InMemoryUserDetailsManager(john, mary, susan);
     }
 
     @Bean
