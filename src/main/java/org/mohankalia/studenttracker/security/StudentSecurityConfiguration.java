@@ -5,6 +5,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.crypto.factory.PasswordEncoderFactories;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
@@ -14,12 +16,17 @@ import org.springframework.security.web.SecurityFilterChain;
 public class StudentSecurityConfiguration {
 
     @Bean
-    public InMemoryUserDetailsManager inMemoryUserDetailsManager() {
+    public PasswordEncoder passwordEncoder() {
+        return PasswordEncoderFactories.createDelegatingPasswordEncoder();
+    }
 
-        UserDetails john = User.builder().username("john").password("{noop}test123").roles("STUDENT").build();
-        UserDetails mary = User.builder().username("mary").password("{noop}test123").roles("STUDENT", "PROFESSOR").build();
-        UserDetails ankesh = User.builder().username("ankesh").password("{noop}test123").roles("STUDENT", "PROFESSOR", "DEAN").build();
-        return new InMemoryUserDetailsManager(john);
+    @Bean
+    public InMemoryUserDetailsManager inMemoryUserDetailsManager(PasswordEncoder passwordEncoder) {
+
+        UserDetails john = User.builder().username("john").password(passwordEncoder.encode("test123")).roles("STUDENT").build();
+        UserDetails mary = User.builder().username("mary").password(passwordEncoder.encode("test123")).roles("STUDENT", "PROFESSOR").build();
+        UserDetails ankesh = User.builder().username("ankesh").password(passwordEncoder.encode("test123")).roles("STUDENT", "PROFESSOR", "DEAN").build();
+        return new InMemoryUserDetailsManager(john, mary, ankesh);
     }
 
     @Bean
@@ -35,7 +42,8 @@ public class StudentSecurityConfiguration {
                         .requestMatchers(HttpMethod.PATCH, "/api/students/**").hasRole("PROFESSOR")
                         // adding new request matchers for the university and study level
                         .requestMatchers(HttpMethod.GET, "/api/students/university/**").hasRole("STUDENT")
-                        .requestMatchers(HttpMethod.GET, "/api/students/studylevel/**").hasRole("Student")
+                        .requestMatchers(HttpMethod.GET, "/api/students/studylevel/**").hasRole("STUDENT")
+                        .anyRequest().authenticated()
         );
 
         // adding basic http authentication
