@@ -46,6 +46,7 @@ public class StudentSecurityConfiguration {
 
         http.authorizeHttpRequests(configure ->
                 configure
+                        .requestMatchers(HttpMethod.GET, "/", "/index.html", "/styles.css", "/app.js", "/students.mjs", "/favicon.svg").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/students").hasRole("STUDENT")
                         .requestMatchers(HttpMethod.GET, "/api/students/**").hasRole("STUDENT")
                         .requestMatchers(HttpMethod.PUT, "/api/students").hasRole("PROFESSOR")
