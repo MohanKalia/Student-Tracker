@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#6953db">
+  <meta name="description" content="Your student directory, thoughtfully organized. Manage student records, universities, and study levels in one place.">
+  <title>Student Tracker · Student directory</title>
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/styles.css">
+  <script type="module" src="/app.js"></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <aside class="sidebar">
+    <div class="brand"><img src="/favicon.svg" alt="" width="42" height="42"><span>Student<span class="brand-light">Tracker</span></span></div>
+    <div class="workspace"><span class="workspace-icon">W</span><span>Academic workspace<small>Student management</small></span></div>
+    <p class="nav-label">WORKSPACE</p>
+    <nav aria-label="Main navigation"><a class="nav-item active" href="#main" aria-current="page"><span class="icon" data-icon="users"></span>Students<span id="nav-count" class="count">0</span></a><a class="nav-item" href="#insights"><span class="icon" data-icon="chart"></span>Study insights</a></nav>
+    <div class="sidebar-note"><span class="note-icon" data-icon="cap"></span><h3>A little more organized.</h3><p>Keep your student community connected, one record at a time.</p></div>
+    <div class="sidebar-footer"><span class="icon" data-icon="shield"></span> Your academic workspace</div>
+  </aside>
+  <div class="shell">
+    <header class="topbar"><div class="breadcrumb">Workspace <span>/</span> <strong>Students</strong></div><div class="account"><span id="account-role">Not signed in</span><span id="account-avatar" class="account-avatar">ST</span><button id="sign-out" class="text-button" hidden>Sign out</button></div></header>
+    <main id="main">
+      <div class="page-heading"><div><div class="eyebrow">YOUR ACADEMIC COMMUNITY</div><h1>Student directory<span class="heading-dot">.</span></h1><p>A clear view of your students. Everything in one place.</p></div><button id="add-student" class="button primary" disabled><span data-icon="plus"></span>Add student</button></div>
+      <div id="page-error" class="banner error" role="alert" hidden><span id="page-error-text"></span><button id="retry" class="text-button">Try again</button></div>
+      <section class="stats" aria-label="Directory overview">
+        <article class="stat"><div class="stat-top"><span>Total students</span><span class="stat-icon purple" data-icon="users"></span></div><strong id="stat-total">—</strong><small>Your student community</small></article>
+        <article class="stat"><div class="stat-top"><span>Universities</span><span class="stat-icon blue" data-icon="building"></span></div><strong id="stat-universities">—</strong><small>Across your directory</small></article>
+        <article class="stat"><div class="stat-top"><span>Study levels</span><span class="stat-icon orange" data-icon="cap"></span></div><strong id="stat-levels">—</strong><small>Distinct academic pathways</small></article>
+        <article class="stat stat-accent"><div class="stat-top"><span>Directory at a glance</span><span data-icon="sparkles"></span></div><h2>Small details.<br>Big possibilities.</h2><small>Good records make a great start.</small></article>
+      </section>
+      <section class="directory panel" aria-labelledby="directory-title">
+        <div class="panel-heading"><div class="title-row"><h2 id="directory-title">All students</h2><span id="result-count" class="pill">0 students</span></div><button id="export" class="button secondary" disabled><span data-icon="download"></span>Export CSV</button></div>
+        <div class="toolbar"><label class="search"><span data-icon="search"></span><input id="search" type="search" aria-label="Search students" placeholder="Search by name, email, or university…"></label><label class="select-wrap"><span class="sr-only">Filter by university</span><select id="university"><option value="">All universities</option></select></label><label class="select-wrap"><span class="sr-only">Filter by study level</span><select id="study-level"><option value="">All study levels</option></select></label><button id="reset-filters" class="text-button" hidden>Clear filters</button></div>
+        <div class="table-scroll"><table><thead><tr><th scope="col"><button id="sort-name" class="sort-button">Student <span id="sort-indicator">↓</span></button></th><th scope="col">University</th><th scope="col">Study level</th><th scope="col">Student ID</th><th scope="col" class="actions-heading">Actions</th></tr></thead><tbody id="student-rows"></tbody></table></div>
+        <div id="empty-state" class="empty-state"><span class="empty-icon" data-icon="users"></span><h3 id="empty-title">Your directory starts here</h3><p id="empty-description">Sign in to view and manage your student community.</p><button id="empty-clear" class="button secondary" hidden>Clear filters</button></div>
+        <div class="pagination"><span id="page-summary">No students to display</span><div><label class="page-size">Rows per page <span class="select-wrap"><select id="page-size"><option>10</option><option>25</option><option>50</option></select></span></label><button id="previous" class="icon-button" aria-label="Previous page" disabled><span data-icon="chevron-left"></span></button><span id="page-number">Page 1 of 1</span><button id="next" class="icon-button" aria-label="Next page" disabled><span data-icon="chevron-right"></span></button></div></div>
+      </section>
+      <section id="insights" class="insights panel" aria-labelledby="insights-title"><div><span class="eyebrow">THE BIGGER PICTURE</span><h2 id="insights-title">Every academic path counts.</h2><p>Explore how your community is distributed across study levels.</p></div><div id="level-breakdown" class="level-breakdown"><p>Study insights will appear when students are loaded.</p></div></section>
+      <footer class="main-footer"><span>Student Tracker</span><span>A place for every student.</span></footer>
+    </main>
+  </div>
+  <dialog id="login-dialog" aria-labelledby="login-title" aria-describedby="login-description">
+    <form id="login-form" class="dialog-content"><img src="/favicon.svg" alt="" width="48" height="48"><span class="eyebrow">WELCOME TO YOUR WORKSPACE</span><h2 id="login-title">Make room for possibility.</h2><p id="login-description">Sign in to your student directory.</p><label>Username<input name="username" autocomplete="username" required placeholder="Your username" autofocus></label><label>Password<input name="password" type="password" autocomplete="current-password" required placeholder="Your password"></label><p id="login-error" class="form-error" role="alert" hidden></p><button class="button primary full" type="submit">Sign in</button><div class="login-help"><strong>Local development accounts</strong><p><b>john</b> · View students<br><b>mary</b> · Add and edit<br><b>susan</b> · Full access</p><span>Password for all accounts: <code>test123</code></span></div></form>
+  </dialog>
+  <dialog id="student-dialog" aria-labelledby="student-dialog-title"><form id="student-form" class="dialog-content"><div class="dialog-heading"><div><span class="eyebrow">STUDENT DETAILS</span><h2 id="student-dialog-title">Add a student</h2></div><button type="button" class="icon-button" data-close="student-dialog" aria-label="Close form"><span data-icon="x"></span></button></div><p>A new connection starts with the essentials.</p><div class="form-grid"><label>First name <span aria-hidden="true">*</span><input name="firstName" required maxlength="255" autocomplete="given-name"></label><label>Last name <span aria-hidden="true">*</span><input name="lastName" required maxlength="255" autocomplete="family-name"></label></div><label>Email address <span aria-hidden="true">*</span><input name="email" type="email" required maxlength="255" autocomplete="email" placeholder="student@university.edu"></label><label>University<input name="university" maxlength="255" list="university-options" placeholder="e.g. University of Bologna"></label><datalist id="university-options"></datalist><label>Study level<input name="studyLevel" maxlength="255" list="level-options" placeholder="e.g. Bachelor, Master, PhD"></label><datalist id="level-options"><option value="Bachelor"><option value="Master"><option value="PhD"></datalist><p id="student-error" class="form-error" role="alert" hidden></p><div class="dialog-actions"><button type="button" class="button secondary" data-close="student-dialog">Cancel</button><button id="save-student" type="submit" class="button primary">Add student</button></div></form></dialog>
+  <dialog id="delete-dialog" aria-labelledby="delete-title"><form id="delete-form" class="dialog-content"><span class="delete-icon" data-icon="trash"></span><h2 id="delete-title">Delete this student?</h2><p id="delete-description"></p><p>This permanently removes their record from the directory.</p><p id="delete-error" class="form-error" role="alert" hidden></p><div class="dialog-actions"><button type="button" class="button secondary" data-close="delete-dialog">Keep student</button><button type="submit" class="button danger">Delete student</button></div></form></dialog>
+  <div id="toast" class="toast" role="status" hidden></div>
+</body>
+</html>

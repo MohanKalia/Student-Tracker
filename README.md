@@ -9,6 +9,15 @@ A secured REST API for managing student records, built with Java 25, Spring Boot
 - Persist data with Spring Data JPA and MySQL
 - Protect endpoints with HTTP Basic authentication and role based permissions
 - Explore the API through Swagger UI
+- Use a responsive student dashboard with sign-in, search, filters, sorting, pagination, and CSV export
+
+## Frontend
+
+Start the application and open [http://localhost:8080](http://localhost:8080). The frontend is served directly by Spring Boot from `src/main/resources/static`; no Node installation or separate build is needed.
+
+Sign in with one of the development accounts listed below. Students can browse records; professors can also add and edit; deans can also delete. The dashboard includes university and study-level filters, live search, directory statistics, study-level insights, and CSV export of the filtered results. Deletions require confirmation.
+
+The frontend keeps the HTTP Basic credentials in browser session storage so sign-in survives page refreshes within the tab. They are cleared on sign-out, rejected authentication, or when the tab is closed. On reload, the interface validates the saved credentials with `/api/me` and retrieves the user's current roles before loading student data; the existing API continues to enforce permissions. The optional Google Fonts stylesheet has system-font fallbacks.
 
 ## Tech stack
 
@@ -38,6 +47,8 @@ Start the application with the Maven wrapper:
 ./mvnw spring-boot:run
 ```
 
+If your checkout's wrapper is not executable, use `bash mvnw spring-boot:run`.
+
 On Windows, use `mvnw.cmd spring-boot:run`.
 
 ## API
@@ -46,6 +57,7 @@ All routes are under `/api` and require HTTP Basic authentication.
 
 | Method | Endpoint | Access |
 | --- | --- | --- |
+| `GET` | `/api/me` | Any authenticated account; returns username and roles |
 | `GET` | `/api/students` | Student |
 | `GET` | `/api/students/{id}` | Student |
 | `GET` | `/api/students/university/{university}` | Student |
@@ -75,6 +87,12 @@ With the app running, open [Swagger UI](http://localhost:8080/ui.html). The Open
 ./mvnw test
 ```
 
+Frontend sign-in restoration, data filtering, and safe CSV export tests use Node's built-in runner (Node 20+):
+
+```bash
+node --test src/test/frontend/*.test.mjs
+```
+
 ## Project status
 
-Core student CRUD, DTOs, validation, role based access, and API documentation are implemented. Planned work includes global error handling, database migrations, stronger authentication, containerization, and deployment.
+Core student CRUD, DTOs, validation, role based access, API documentation, and an integrated frontend are implemented. Planned work includes global error handling, database migrations, stronger authentication, containerization, and deployment.

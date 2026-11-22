@@ -10,6 +10,7 @@ import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.httpBasic;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -35,6 +36,27 @@ class StudentRestControllerTests {
     @BeforeEach
     void setUp() {
         studentRepository.deleteAll();
+    }
+
+    @Test
+    void frontendAssetsArePublicButStudentDataIsProtected() throws Exception {
+        for (String asset : new String[]{"/index.html", "/app.js", "/styles.css", "/students.mjs", "/favicon.svg"}) {
+            mockMvc.perform(get(asset)).andExpect(status().isOk());
+        }
+        mockMvc.perform(get("/")).andExpect(status().isOk());
+        mockMvc.perform(get("/api/students")).andExpect(status().isUnauthorized());
+        mockMvc.perform(get("/api/me")).andExpect(status().isUnauthorized());
+    }
+
+    @Test
+    void currentUserReturnsAuthenticatedIdentityAndPermissions() throws Exception {
+        mockMvc.perform(get("/api/me").with(httpBasic("mary", "test123")))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.username").value("mary"))
+                .andExpect(jsonPath("$.roles", org.hamcrest.Matchers.containsInAnyOrder("STUDENT", "PROFESSOR")))
+                .andExpect(jsonPath("$.password").doesNotExist());
+        mockMvc.perform(get("/api/me").with(httpBasic("mary", "incorrect")))
+                .andExpect(status().isUnauthorized());
     }
 
     @Test
